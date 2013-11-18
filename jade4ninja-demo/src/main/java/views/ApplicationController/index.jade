@@ -1,0 +1,17 @@
+extend ../layout/defaultLayout
+title='Home Page'
+
+block content
+  if frontArticle != null
+    .jumbotron
+      h1
+        a(href='/article/#{frontArticle.id}') #{fromArticle.title}
+      p #{frontArticle.postedAt}
+      p #{frontArticle.content}
+  hr
+  
+  if olderArticles != null
+    each article in olderArticles
+      h3
+        a(href='/article/#{article.id}' #{article.title}
+        p #{article.postedAt}

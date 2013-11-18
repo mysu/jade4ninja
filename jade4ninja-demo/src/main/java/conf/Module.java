@@ -16,6 +16,8 @@
 
 package conf;
 
+import co.leugim.jade4ninja.Jade4NinjaModule;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 
@@ -24,6 +26,8 @@ public class Module extends AbstractModule {
     
 
     protected void configure() {
+        
+        install(new Jade4NinjaModule());
         
         bind(StartupActions.class);    
         

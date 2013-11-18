@@ -6,8 +6,9 @@ public class Jade4NinjaModule extends AbstractModule{
 
     @Override
     protected void configure() {
-        // TODO Auto-generated method stub
-        
+      System.out.println("Initializing Jade4NinjaModule");
+      bind(TemplateEngineJade4J.class);
+      System.out.println("Jade4NinjaModule initialized");  
     }
 
 }
