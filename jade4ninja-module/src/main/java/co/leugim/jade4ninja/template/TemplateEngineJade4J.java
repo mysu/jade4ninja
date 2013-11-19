@@ -7,6 +7,7 @@ import java.util.Map;
 
 import ninja.Context;
 import ninja.Result;
+import ninja.i18n.Lang;
 import ninja.i18n.Messages;
 import ninja.template.TemplateEngine;
 import ninja.template.TemplateEngineHelper;
@@ -15,8 +16,6 @@ import ninja.utils.ResponseStreams;
 
 import org.slf4j.Logger;
 
-import com.google.common.base.CaseFormat;
-import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -40,18 +39,21 @@ public class TemplateEngineJade4J implements TemplateEngine {
     private TemplateEngineHelper templateEngineHelper;
     private Jade4NinjaExceptionHandler exceptionHandler;
     private Messages messages;
+    private Lang lang;
 
     @Inject
     public TemplateEngineJade4J(Logger logger,
                                 TemplateEngineHelper templateEngineHelper,
                                 NinjaProperties ninjaProperties,
                                 Jade4NinjaExceptionHandler exceptionHandler,
-                                Messages messages) {
+                                Messages messages,
+                                Lang lang) {
         this.logger = logger;
         this.ninjaProperties = ninjaProperties;
         this.templateEngineHelper = templateEngineHelper;
         this.exceptionHandler = exceptionHandler;
         this.messages = messages;
+        this.lang = lang;
 
         configureJade4J();
     }
@@ -79,24 +81,17 @@ public class TemplateEngineJade4J implements TemplateEngine {
 
     @Override
     public void invoke(Context context, Result result) {
-        Object object = result.getRenderable();
-        Map<String, Object> model;
-        if (object == null) {
-            model = Maps.newHashMap();
-        } else if (object instanceof Map) {
-            @SuppressWarnings("unchecked")
-            Map<String, Object> map = (Map<String, Object>) object;
-            model = map;
-        } else {
-            model = Maps.newHashMap();
-            String realClassNameLowerCamelCase = CaseFormat.UPPER_CAMEL.to(
-                    CaseFormat.LOWER_CAMEL, object.getClass().getSimpleName());
-            model.put(realClassNameLowerCamelCase, object);
-        }
 
-        // TODO add session, context, cookie objects
-        model.put("i18n", new JadeI18nHandler(messages, context, result));
+        JadeModelParamsBuilder modelBuilder = new JadeModelParamsBuilder();
+        modelBuilder.with(context).with(messages).with(result).with(lang);
+        Map<String, Object> model = modelBuilder.build();
 
+        render(context, result, model);
+    }
+
+    private void render(Context context,
+                        Result result,
+                        Map<String, Object> model) {
         String templateName = templateEngineHelper.getTemplateForResult(
                 context.getRoute(), result, SUFFIX);
 
