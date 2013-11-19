@@ -1,7 +1,8 @@
-package co.leugim.jade4ninja;
+package co.leugim.jade4ninja.template;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.Map;
 
 import ninja.Context;
@@ -36,76 +37,81 @@ public class TemplateEngineJade4J implements TemplateEngine {
     private final NinjaProperties ninjaProperties;
     private JadeConfiguration jadeConfiguration;
     private TemplateEngineHelper templateEngineHelper;
+    private Jade4NinjaExceptionHandler exceptionHandler;
 
     @Inject
     public TemplateEngineJade4J(Logger logger,
                                 TemplateEngineHelper templateEngineHelper,
-                                NinjaProperties ninjaProperties) {
+                                NinjaProperties ninjaProperties,
+                                Jade4NinjaExceptionHandler exceptionHandler) {
         this.logger = logger;
         this.ninjaProperties = ninjaProperties;
         this.templateEngineHelper = templateEngineHelper;
+        this.exceptionHandler = exceptionHandler;
 
         configureJade4J();
     }
 
     private void configureJade4J() {
         jadeConfiguration = new JadeConfiguration();
-        String srcDir 
-        = System.getProperty("user.dir")
-            + File.separator 
-            + "src" 
-            + File.separator 
-            + "main" 
-            + File.separator
-            + "java";        
-                
+        String srcDir = System.getProperty("user.dir") + File.separator + "src"
+                + File.separator + "main" + File.separator + "java";
+
         if ((ninjaProperties.isDev() || ninjaProperties.isTest())
                 && new File(srcDir).exists()) {
-            jadeConfiguration.setTemplateLoader(new FileTemplateLoader(srcDir, "UTF-8"));
+            jadeConfiguration.setTemplateLoader(new FileTemplateLoader(srcDir,
+                    "UTF-8"));
             jadeConfiguration.setCaching(false);
             jadeConfiguration.setPrettyPrint(true);
-        }else{
+        } else {
             jadeConfiguration.setTemplateLoader(new ClasspathTemplateLoader());
             jadeConfiguration.setCaching(true);
             jadeConfiguration.setPrettyPrint(false);
         }
-        
+
         jadeConfiguration.setMode(Mode.HTML);
-        
+
     }
 
     @Override
     public void invoke(Context context, Result result) {
         Object object = result.getRenderable();
         Map<String, Object> model;
-        if(object == null){
+        if (object == null) {
             model = Maps.newHashMap();
-        }else if(object instanceof Map){
+        } else if (object instanceof Map) {
             @SuppressWarnings("unchecked")
-            Map<String, Object> map = (Map<String, Object>)object;
+            Map<String, Object> map = (Map<String, Object>) object;
             model = map;
-        }else{
+        } else {
             model = Maps.newHashMap();
             String realClassNameLowerCamelCase = CaseFormat.UPPER_CAMEL.to(
                     CaseFormat.LOWER_CAMEL, object.getClass().getSimpleName());
             model.put(realClassNameLowerCamelCase, object);
         }
-        
-        //TODO add session, context, cookie objects
-        
+
+        // TODO add session, context, cookie objects
+
         String templateName = templateEngineHelper.getTemplateForResult(
                 context.getRoute(), result, SUFFIX);
+
+        ResponseStreams responseStreams = context.finalizeHeaders(result);
+        Writer out;
+        try {
+             out = responseStreams.getWriter();
+        } catch (IOException e) {
+            logger.error("Error getting writer to render JADE template", e);
+            return;
+        }
         
         try {
             JadeTemplate template = jadeConfiguration.getTemplate(templateName);
-            ResponseStreams responseStreams = context.finalizeHeaders(result);
-            Jade4J.render(template, model, responseStreams.getWriter());
+            Jade4J.render(template, model, out);
             responseStreams.getWriter().flush();
             responseStreams.getWriter().close();
-            
         } catch (JadeException | IOException e) {
-           logger.error("Error", e);
-        } 
+            exceptionHandler.handleException(out, e);
+        }
     }
 
     @Override

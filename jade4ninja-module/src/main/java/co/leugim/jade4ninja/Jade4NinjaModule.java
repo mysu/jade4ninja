@@ -1,5 +1,7 @@
 package co.leugim.jade4ninja;
 
+import co.leugim.jade4ninja.template.TemplateEngineJade4J;
+
 import com.google.inject.AbstractModule;
 
 public class Jade4NinjaModule extends AbstractModule{

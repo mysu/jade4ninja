@@ -13,5 +13,5 @@ block content
   if olderArticles != null
     each article in olderArticles
       h3
-        a(href='/article/#{article.id}' #{article.title}
+        a(href='/article/#{article.id}') #{article.title}
         p #{article.postedAt}
