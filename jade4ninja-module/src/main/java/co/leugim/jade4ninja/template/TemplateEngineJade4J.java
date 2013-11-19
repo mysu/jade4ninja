@@ -7,6 +7,7 @@ import java.util.Map;
 
 import ninja.Context;
 import ninja.Result;
+import ninja.i18n.Messages;
 import ninja.template.TemplateEngine;
 import ninja.template.TemplateEngineHelper;
 import ninja.utils.NinjaProperties;
@@ -38,16 +39,19 @@ public class TemplateEngineJade4J implements TemplateEngine {
     private JadeConfiguration jadeConfiguration;
     private TemplateEngineHelper templateEngineHelper;
     private Jade4NinjaExceptionHandler exceptionHandler;
+    private Messages messages;
 
     @Inject
     public TemplateEngineJade4J(Logger logger,
                                 TemplateEngineHelper templateEngineHelper,
                                 NinjaProperties ninjaProperties,
-                                Jade4NinjaExceptionHandler exceptionHandler) {
+                                Jade4NinjaExceptionHandler exceptionHandler,
+                                Messages messages) {
         this.logger = logger;
         this.ninjaProperties = ninjaProperties;
         this.templateEngineHelper = templateEngineHelper;
         this.exceptionHandler = exceptionHandler;
+        this.messages = messages;
 
         configureJade4J();
     }
@@ -91,6 +95,7 @@ public class TemplateEngineJade4J implements TemplateEngine {
         }
 
         // TODO add session, context, cookie objects
+        model.put("i18n", new JadeI18nHandler(messages, context, result));
 
         String templateName = templateEngineHelper.getTemplateForResult(
                 context.getRoute(), result, SUFFIX);
