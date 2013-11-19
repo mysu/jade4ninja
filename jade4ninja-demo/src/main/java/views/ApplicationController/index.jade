@@ -7,7 +7,7 @@ block content
       h1
         a(href='/article/#{frontArticle.id}') #{fromArticle.title}
       p #{frontArticle.postedAt}
-      p #{frontArticle.content}
+      p !{frontArticle.content}
   hr
   
   if olderArticles != null

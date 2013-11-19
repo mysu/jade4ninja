@@ -70,7 +70,7 @@
 					<contextPath>/</contextPath>
 					<stopKey>stop</stopKey>
 					<stopPort>8889</stopPort>
-					<scanIntervalSeconds>1</scanIntervalSeconds>
+					<scanIntervalSeconds>1000000</scanIntervalSeconds>
 					<reload>automatic</reload>
 					<scanTargetPatterns>
 						<scanTargetPattern>
@@ -79,6 +79,7 @@
 								<include>**/*</include>
 							</includes>
 							<excludes>
+							    <exclude>**/*.jade</exclude>
 								<exclude>**/*.ftl.html</exclude>
 								<exclude>assets/**</exclude>
 							</excludes>
