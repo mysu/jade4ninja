@@ -1,7 +1,6 @@
-<#import "../layout/defaultLayout.ftl.html" as layout> <@layout.myLayout "Error. Forbidden.">
+extend ../layout/defaultLayout
+block params
+  title="Forbidden"
 
-<h1>Oops. Forbidden.</h1>
-
-</@layout.myLayout>
-
-
+block content
+  h1 Oops. Forbidden

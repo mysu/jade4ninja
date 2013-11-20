@@ -1,12 +1,12 @@
-extend ../layout/defaultLayout
 block params
-  title='Home Page'
+  - title='Home Page'
+extend ../layout/defaultLayout
 
 block content
   if frontArticle != null
     .jumbotron
       h1
-        a(href='/article/#{frontArticle.id}') #{fromArticle.title}
+        a(href='/article/#{frontArticle.id}') #{frontArticle.title}
       p #{frontArticle.postedAt}
       p !{frontArticle.content}
   hr

@@ -61,7 +61,7 @@ public class TemplateEngineJade4J implements TemplateEngine {
     private void configureJade4J() {
         jadeConfiguration = new JadeConfiguration();
         String srcDir = System.getProperty("user.dir") + File.separator + "src"
-                + File.separator + "main" + File.separator + "java";
+                + File.separator + "main" + File.separator + "java" + File.separator;
 
         if ((ninjaProperties.isDev() || ninjaProperties.isTest())
                 && new File(srcDir).exists()) {
@@ -72,7 +72,7 @@ public class TemplateEngineJade4J implements TemplateEngine {
         } else {
             jadeConfiguration.setTemplateLoader(new ClasspathTemplateLoader());
             jadeConfiguration.setCaching(true);
-            jadeConfiguration.setPrettyPrint(false);
+            jadeConfiguration.setPrettyPrint(true);
         }
 
         jadeConfiguration.setMode(Mode.HTML);

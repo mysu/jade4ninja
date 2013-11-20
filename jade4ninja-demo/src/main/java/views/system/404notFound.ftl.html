@@ -1,5 +1,6 @@
-<#import "../layout/defaultLayout.ftl.html" as layout> <@layout.myLayout "Error. Not found.">
+extend ../layout/defaultLayout
+block params
+  title="Not found"
 
-<h1>Oops. Not found.</h1>
-
-</@layout.myLayout>
+block content
+  h1 Oops. Not found
