@@ -1,7 +1,27 @@
 # Jade4Ninja
-Jade4Ninja give support for Jade4J for Java templating
+Jade4Ninja(beta) give support for Jade4J for Java templating
 
-**Project still in development**, not ready to use
+Basic functionalities
+
+## How to use
+
+* Add dependency in pom.xml
+
+    <dependency>
+      <groupId>org.ninjaframework</groupId>
+        <artifactId>jade4ninja</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+        </exclusions>
+     </dependency>
+
+* Add the Jade files in _views_ path in the same way that _.ftl.html_ files
+
+* See a full usage example in _jade4ninja-demo_
 
 ## Reference
 
