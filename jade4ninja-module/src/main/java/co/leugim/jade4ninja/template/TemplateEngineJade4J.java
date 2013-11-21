@@ -30,7 +30,7 @@ import de.neuland.jade4j.template.JadeTemplate;
 @Singleton
 public class TemplateEngineJade4J implements TemplateEngine {
 
-    private static final String SUFFIX = ".jade";
+    public static final String SUFFIX = ".jade";
     private static final String CONTENT_TYPE = "text/html";
 
     private final Logger logger;

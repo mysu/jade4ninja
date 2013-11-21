@@ -186,7 +186,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.ninjaframework</groupId>
+			<groupId>co.leugim</groupId>
 			<artifactId>jade4ninja</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<exclusions>
