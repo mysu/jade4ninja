@@ -72,7 +72,7 @@ public class TemplateEngineJade4J implements TemplateEngine {
         } else {
             jadeConfiguration.setTemplateLoader(new ClasspathTemplateLoader());
             jadeConfiguration.setCaching(true);
-            jadeConfiguration.setPrettyPrint(true);
+            jadeConfiguration.setPrettyPrint(false);
         }
 
         jadeConfiguration.setMode(Mode.HTML);
@@ -89,7 +89,7 @@ public class TemplateEngineJade4J implements TemplateEngine {
         render(context, result, model);
     }
 
-    private void render(Context context,
+    protected final void render(Context context,
                         Result result,
                         Map<String, Object> model) {
         String templateName = templateEngineHelper.getTemplateForResult(

@@ -17,28 +17,28 @@ public class JadeModelParamsBuilder {
     private Result result;
     private Messages messages;
     private Lang lang;
-    
-    public JadeModelParamsBuilder with(Context context) {
+
+    public final JadeModelParamsBuilder with(Context context) {
         this.context = context;
         return this;
     }
 
-    public JadeModelParamsBuilder with(Result result) {
+    public final JadeModelParamsBuilder with(Result result) {
         this.result = result;
         return this;
     }
-    
-    public JadeModelParamsBuilder with(Messages messages){
+
+    public final JadeModelParamsBuilder with(Messages messages) {
         this.messages = messages;
         return this;
     }
-    
-    public JadeModelParamsBuilder with(Lang lang){
+
+    public final JadeModelParamsBuilder with(Lang lang) {
         this.lang = lang;
         return this;
     }
 
-    public Map<String, Object> build() {
+    public final Map<String, Object> build() {
         checkParams();
         Map<String, Object> model = getRenderableResult();
         setI18n(model);
@@ -49,74 +49,80 @@ public class JadeModelParamsBuilder {
         return model;
     }
 
-    private void setFlash(Map<String, Object> model) {
-        ///////////////////////////////////////////////////////////////////////
+    protected void setFlash(Map<String, Object> model) {
+        // /////////////////////////////////////////////////////////////////////
         // Convenience method to translate possible flash scope keys.
         // !!! If you want to set messages with placeholders please do that
         // !!! in your controller. We only can set simple messages.
-        // Eg. A message like "errorMessage=my name is: {0}" => translate in controller and pass directly.
-        //     A message like " errorMessage=An error occurred" => use that as errorMessage.  
+        // Eg. A message like "errorMessage=my name is: {0}" => translate in
+        // controller and pass directly.
+        // A message like " errorMessage=An error occurred" => use that as
+        // errorMessage.
         //
         // get keys via ${flash.KEYNAME}
-        //////////////////////////////////////////////////////////////////////
+        // ////////////////////////////////////////////////////////////////////
         Map<String, String> translatedFlashCookieMap = Maps.newHashMap();
-        for (Entry<String, String> entry : context.getFlashCookie().getCurrentFlashCookieData().entrySet()) {
-            
-            String messageValue = null;
+        if (context.getFlashCookie() != null)
+            for (Entry<String, String> entry : context.getFlashCookie()
+                    .getCurrentFlashCookieData().entrySet()) {
 
-                
-            Optional<String> messageValueOptional = messages.get(entry.getValue(), context, Optional.of(result));
-                
-            if (!messageValueOptional.isPresent()) {
-                messageValue = entry.getValue();
-            } else {
-                messageValue = messageValueOptional.get();
+                String messageValue = null;
+
+                Optional<String> messageValueOptional = messages.get(
+                        entry.getValue(), context, Optional.of(result));
+
+                if (!messageValueOptional.isPresent()) {
+                    messageValue = entry.getValue();
+                } else {
+                    messageValue = messageValueOptional.get();
+                }
+                // new way
+                translatedFlashCookieMap.put(entry.getKey(), messageValue);
             }
-            // new way
-            translatedFlashCookieMap.put(entry.getKey(), messageValue);
-        }
-        
+
         // now we can retrieve flash cookie messages via ${flash.MESSAGE_KEY}
-        model.put("flash", translatedFlashCookieMap);      
+        model.put("flash", translatedFlashCookieMap);
     }
 
-    private void setContext(Map<String, Object> model) {
+    protected void setContext(Map<String, Object> model) {
         model.put("contextPath", context.getContextPath());
     }
 
-    private void setSession(Map<String, Object> model) {
+    protected void setSession(Map<String, Object> model) {
         // put all entries of the session cookie to the map.
         // You can access the values by their key in the cookie
-        if (!context.getSessionCookie().isEmpty()) {
+        if (context.getSessionCookie() != null
+                && !context.getSessionCookie().isEmpty()) {
             model.put("session", context.getSessionCookie().getData());
         }
-        
+
     }
 
-    private void setLanguage(Map<String, Object> model) {
+    protected void setLanguage(Map<String, Object> model) {
         // set language from framework. You can access
         // it in the templates as ${lang}
-        Optional<String> language = lang.getLanguage(context, Optional.of(result));
+        Optional<String> language = lang.getLanguage(context,
+                Optional.of(result));
         if (language.isPresent()) {
             model.put("lang", language.get());
         }
-        
+
     }
 
-    private void setI18n(Map<String, Object> model) {
+    protected void setI18n(Map<String, Object> model) {
         model.put("i18n", new JadeI18nHandler(messages, context, result));
     }
 
-    private void checkParams() {
+    protected void checkParams() {
         if (context == null || result == null || messages == null) {
             throw new IllegalArgumentException(
                     "Context, result or messages cannot be null");
         }
     }
 
-    private Map<String, Object> getRenderableResult() {
+    protected Map<String, Object> getRenderableResult() {
         Object object = result.getRenderable();
-        
+
         Map<String, Object> model;
         if (object == null) {
             model = Maps.newHashMap();
