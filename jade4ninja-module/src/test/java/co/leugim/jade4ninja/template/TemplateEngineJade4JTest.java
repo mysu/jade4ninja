@@ -14,8 +14,6 @@ import java.util.Map;
 import ninja.Context;
 import ninja.Result;
 import ninja.Route;
-import ninja.i18n.Lang;
-import ninja.i18n.Messages;
 import ninja.template.TemplateEngineHelper;
 import ninja.utils.NinjaProperties;
 import ninja.utils.ResponseStreams;
@@ -28,34 +26,28 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 
-import de.neuland.jade4j.JadeConfiguration;
-
 @RunWith(MockitoJUnitRunner.class)
 public class TemplateEngineJade4JTest {
 
-    @InjectMocks
     private TemplateEngineJade4J engine;
 
-    @Mock
-    private Logger logger;
     @Mock
     private NinjaProperties ninjaProperties;
     @Mock
     private TemplateEngineHelper templateEngineHelper;
     @Mock
+    private Context context;
+    private Result result = null;
+    @InjectMocks
     private Jade4NinjaExceptionHandler exceptionHandler;
     @Mock
-    private Messages messages;
-    @Mock
-    private Lang lang;
-    @Mock
-    private Context context;
-    @Mock
-    private Result result;
+    private Logger logger;
 
     @Before
     public void setup() {
-        when(ninjaProperties.isDev()).thenReturn(true);
+        when(ninjaProperties.isTest()).thenReturn(true);
+        when(ninjaProperties.isDev()).thenReturn(false);
+        when(ninjaProperties.isProd()).thenReturn(false);
     }
 
     @Test
@@ -63,7 +55,7 @@ public class TemplateEngineJade4JTest {
         when(
                 templateEngineHelper.getTemplateForResult(any(Route.class),
                         any(Result.class), any(String.class))).thenReturn(
-                "views/test.jade");
+                "../../test/java/views/test.jade");
         final StringWriter writer = new StringWriter();
         when(context.finalizeHeaders(result)).thenReturn(new ResponseStreams() {
 
@@ -77,11 +69,15 @@ public class TemplateEngineJade4JTest {
                 return null;
             }
         });
+
+        engine = new TemplateEngineJade4J(null, templateEngineHelper,
+                ninjaProperties, exceptionHandler, null, null);
+
         Map<String, Object> model = new HashMap<>();
         model.put("key", "Jade");
         engine.render(context, result, model);
-        
+
         assertEquals("<h1>Hello World Jade</h1>", writer.toString());
     }
-
 }
+

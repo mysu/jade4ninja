@@ -60,8 +60,7 @@ public class TemplateEngineJade4J implements TemplateEngine {
 
     private void configureJade4J() {
         jadeConfiguration = new JadeConfiguration();
-        String srcDir = System.getProperty("user.dir") + File.separator + "src"
-                + File.separator + "main" + File.separator + "java" + File.separator;
+        String srcDir = buildSrcDir();
 
         if ((ninjaProperties.isDev() || ninjaProperties.isTest())
                 && new File(srcDir).exists()) {
@@ -79,6 +78,12 @@ public class TemplateEngineJade4J implements TemplateEngine {
 
     }
 
+    private String buildSrcDir() {
+        return System.getProperty("user.dir") + File.separator + "src"
+                + File.separator + "main" + File.separator + "java"
+                + File.separator;
+    }
+
     @Override
     public void invoke(Context context, Result result) {
 
@@ -90,20 +95,20 @@ public class TemplateEngineJade4J implements TemplateEngine {
     }
 
     protected final void render(Context context,
-                        Result result,
-                        Map<String, Object> model) {
+                                Result result,
+                                Map<String, Object> model) {
         String templateName = templateEngineHelper.getTemplateForResult(
                 context.getRoute(), result, SUFFIX);
 
         ResponseStreams responseStreams = context.finalizeHeaders(result);
         Writer out;
         try {
-             out = responseStreams.getWriter();
+            out = responseStreams.getWriter();
         } catch (IOException e) {
             logger.error("Error getting writer to render JADE template", e);
             return;
         }
-        
+
         try {
             JadeTemplate template = jadeConfiguration.getTemplate(templateName);
             Jade4J.render(template, model, out);
