@@ -26,14 +26,6 @@
 	<name>Jade4Ninja</name>
 	<url>https://github.com/emiguelt/jade4ninja/</url>
 
-	<!-- Deploy to central maven using the oss-parent of sonatype -->
-	<!-- https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide -->
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
-	</parent>
-
 	<modules>
 		<!-- the module is the core thing -->
 		<module>jade4ninja-module</module>
@@ -46,7 +38,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<siteProjectVersion>${project.version}</siteProjectVersion>
-        <ninja.version>2.2.0</ninja.version>
+    <ninja.version>2.2.0</ninja.version>
+    <github.global.server>github</github.global.server>
 	</properties>
 
 	<!-- Fix version 1.6 of java compiler in all submodules: -->
@@ -63,29 +56,41 @@
 						<target>1.7</target>
 					</configuration>
 				</plugin>
-
+        <plugin>
+          <groupId>com.github.github</groupId>
+          <artifactId>site-maven-plugin</artifactId>
+          <version>0.8</version>
+          <configuration>
+            <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
+            <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
+            <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
+            <branch>refs/heads/mvn-repo</branch>                       <!-- remote branch name -->
+            <includes><include>**/*</include></includes>
+            <repositoryName>emiguelt</repositoryName>
+            <repositoryOwner>jade4ninja</repositoryOwner>
+          </configuration>
+          <executions>
+          <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+            <execution>
+              <goals>
+                <goal>site</goal>
+              </goals>
+              <phase>deploy</phase>
+            </execution>
+          </executions>
+        </plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
 
-	<scm>
-		<url>https://github.com/emiguelt/jade4ninja</url>
-		<connection>scm:git://github.com/emiguelt/jade4ninja.git</connection>
-		<developerConnection>scm:git:git@github.com:emiguelt/jade4ninja.git</developerConnection>
-	</scm>
 
-	<issueManagement>
-		<system>GitHub</system>
-		<url>https://github.com/emiguelt/jade4ninja/issues/</url>
-	</issueManagement>
-
-	<mailingLists>
-		<mailingList>
-			<name>Ninja Web Framework Users</name>
-			<post>ninja-framework@googlegroups.com</post>
-			<archive>http://groups.google.com/group/ninja-framework</archive>
-		</mailingList>
-	</mailingLists>
+  <distributionManagement>
+      <repository>
+          <id>internal.repo</id>
+          <name>Temporary Staging Repository</name>
+          <url>file://${project.build.directory}/mvn-repo</url>
+      </repository>
+  </distributionManagement>
 
 
 	<profiles>
