@@ -5,7 +5,22 @@ Basic functionalities
 
 ## How to use
 
+* Add repository
+
+
+    <repositories>
+      <repository>
+        <id>jade4ninja-repo</id>
+        <url>https://raw.github.com/emiguelt/jade3ninja/mvn-repo/</url>
+        <snapshots>
+          <enabled>true</enabled>
+          <updatePolicy>always</updatePolicy>
+        </snapshots>
+      </repository>
+    <repositories>
+
 * Add dependency in pom.xml
+
 
     <dependency>
       <groupId>org.ninjaframework</groupId>
@@ -17,7 +32,8 @@ Basic functionalities
             <groupId>commons-logging</groupId>
           </exclusion>
         </exclusions>
-     </dependency>
+    </dependency>
+
 
 * Add the Jade files in _views_ path in the same way that _.ftl.html_ files
 
