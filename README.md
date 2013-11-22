@@ -26,7 +26,7 @@ Basic functionalities
     <dependency>
       <groupId>org.ninjaframework</groupId>
         <artifactId>jade4ninja</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
         <exclusions>
           <exclusion>
             <artifactId>commons-logging</artifactId>
