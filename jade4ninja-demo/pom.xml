@@ -31,7 +31,7 @@
 	<repositories>
 		<repository>
 			<id>jade4ninja-repo</id>
-			<url>https://raw.github.com/emiguelt/jade3ninja/mvn-repo/</url>
+			<url>https://raw.github.com/emiguelt/jade4ninja/mvn-repo/</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
