@@ -201,7 +201,7 @@
 
 		<dependency>
 			<groupId>org.ninjaframework</groupId>
-			<artifactId>jade4ninja</artifactId>
+			<artifactId>jade4ninja-module</artifactId>
 			<version>0.1.0</version>
 			<exclusions>
 				<exclusion>
