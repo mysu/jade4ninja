@@ -26,7 +26,7 @@ Basic functionalities
     <dependency>
       <groupId>org.ninjaframework</groupId>
         <artifactId>jade4ninja</artifactId>
-        <version>0.0.1</version>
+        <version>0.1.0</version>
         <exclusions>
           <exclusion>
             <artifactId>commons-logging</artifactId>
@@ -39,6 +39,7 @@ Basic functionalities
 * Add the Jade files in _views_ path in the same way that _.ftl.html_ files
 
 * See a full usage example in _jade4ninja-demo_
+
 
 ## Reference
 
