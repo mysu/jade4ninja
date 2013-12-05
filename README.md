@@ -1,9 +1,11 @@
 # Jade4Ninja
+
 Jade4Ninja(beta) give support for Jade4J for Java templating
 
 Basic functionalities
 
 ## How to use
+
 
 * Add repository
 
@@ -26,7 +28,7 @@ Basic functionalities
     <dependency>
       <groupId>org.ninjaframework</groupId>
         <artifactId>jade4ninja</artifactId>
-        <version>0.1.0</version>
+        <version>0.2.0</version>
         <exclusions>
           <exclusion>
             <artifactId>commons-logging</artifactId>

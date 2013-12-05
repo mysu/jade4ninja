@@ -22,7 +22,7 @@
 	<groupId>org.ninjaframework</groupId>
 	<artifactId>jade4ninja</artifactId>
 	<packaging>pom</packaging>
-	<version>0.1.0</version>
+  <version>0.2.0</version>
 	<name>Jade4Ninja</name>
 	<url>https://github.com/emiguelt/jade4ninja/</url>
 
@@ -39,6 +39,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<siteProjectVersion>${project.version}</siteProjectVersion>
     <ninja.version>2.3.0</ninja.version>
+    <jade4ninja.version>${project.version}</jade4ninja.version>
 	</properties>
 
 	<!-- Fix version 1.6 of java compiler in all submodules: -->

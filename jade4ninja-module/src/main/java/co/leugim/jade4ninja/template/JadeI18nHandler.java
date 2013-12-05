@@ -34,7 +34,7 @@ public class JadeI18nHandler {
         this.result = Optional.of(result);
     }
 
-    public String getValue(String key, String... args){
+    public String value(String key, String... args){
         if (key == null || key.isEmpty()) {
 
             throw new RuntimeException("Using i18n without any key is not possible.");
