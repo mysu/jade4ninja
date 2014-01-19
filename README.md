@@ -13,7 +13,7 @@ Basic functionalities
     <repositories>
       <repository>
         <id>jade4ninja-repo</id>
-        <url>https://raw.github.com/emiguelt/jade4ninja/mvn-repo/</url>
+        <url>https://raw.github.com/mysu/jade4ninja/mvn-repo/</url>
         <snapshots>
           <enabled>true</enabled>
           <updatePolicy>always</updatePolicy>
@@ -28,7 +28,7 @@ Basic functionalities
     <dependency>
       <groupId>org.ninjaframework</groupId>
         <artifactId>jade4ninja</artifactId>
-        <version>0.2.0</version>
+        <version>0.3.0</version>
         <exclusions>
           <exclusion>
             <artifactId>commons-logging</artifactId>
@@ -41,6 +41,7 @@ Basic functionalities
 * Add the Jade files in _views_ path in the same way that _.ftl.html_ files
 
 * See a full usage example in _jade4ninja-demo_
+
 
 
 ## Reference

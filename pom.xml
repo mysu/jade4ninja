@@ -22,9 +22,9 @@
 	<groupId>org.ninjaframework</groupId>
 	<artifactId>jade4ninja</artifactId>
 	<packaging>pom</packaging>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
 	<name>Jade4Ninja</name>
-	<url>https://github.com/emiguelt/jade4ninja/</url>
+	<url>https://github.com/mysu/jade4ninja/</url>
 
 	<modules>
 		<!-- the module is the core thing -->
@@ -38,7 +38,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<siteProjectVersion>${project.version}</siteProjectVersion>
-    <ninja.version>2.3.0</ninja.version>
+    <ninja.version>2.5.1</ninja.version>
     <jade4ninja.version>${project.version}</jade4ninja.version>
 	</properties>
 
